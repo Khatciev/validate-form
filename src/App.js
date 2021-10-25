@@ -8,8 +8,7 @@ import {
     TextField,
     Typography,
     FormControl,
-    InputLabel,
-    Select, FormGroup, FormControlLabel, Switch, Grid, TextareaAutosize, Container
+    FormGroup, FormControlLabel, Switch, Grid, TextareaAutosize, Container
 } from "@material-ui/core";
 import Modal from '@material-ui/core/Modal';
 import { Formik } from 'formik';
@@ -22,7 +21,7 @@ const useStyles = makeStyles({
     paper: {
         margin: "0 auto",
         width: "650px",
-        height: "725px"
+        height: "780px"
     },
     error: {
         color: "red",
@@ -35,6 +34,10 @@ const useStyles = makeStyles({
     },
     boxInput: {
         marginBottom: "15px"
+    },
+    select: {
+        borderRadius: "5px",
+        height: "50px"
     }
 });
 
@@ -43,20 +46,25 @@ const useStyles = makeStyles({
 function App() {
     const classes = useStyles()
     const [open, setOpen] = React.useState(false)
-    const [checked, setChecked] = React.useState(false);
+    const [supChecked, setSupChecked] = React.useState(false);
+    const [subChecked, setSubChecked] = React.useState(false);
     const [total, setTotal] = React.useState(0)
-    const [number, setNumber] = React.useState({
-        age: '',
-        name: 'hai',
-    })
+    // const [number, setNumber] = React.useState({
+    //     age: '',
+    //     name: 'hai',
+    // })
 
     const  validationSchema = yup.object().shape({
-        name: yup.string().typeError("Должно быть строкой").required("Обязательно"),
-        lastName: yup.string().typeError("Должно быть строкой").required("Обязательно"),
-        email: yup.string().email("Введите верный email").required("Обязательно")
+        name: yup.string().typeError("Должно быть строкой").required("Please fill in first name!"),
+        lastName: yup.string().typeError("Должно быть строкой").required("Please fill in last name!"),
+        email: yup.string().email("Please fill in  email").required("required!"),
+        color: yup.string().required("Please select product type!")
     })
-    const toggleChecked = () => {
-        setChecked((prev) => !prev);
+    const supToggleChecked = () => {
+        setSupChecked((prev) => !prev);
+    };
+    const subToggleChecked = () => {
+        setSubChecked((prev) => !prev);
     };
     const handleOpen = () => {
         setOpen(true);
@@ -64,13 +72,13 @@ function App() {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleUpdate = (event) => {
-        const name = event.target.name;
-        setNumber({
-            ...number,
-            [name]: event.target.value,
-        });
-    };
+    // const handleUpdate = (event) => {
+    //     const name = event.target.name;
+    //     setNumber({
+    //         ...number,
+    //         [name]: event.target.value,
+    //     });
+    // };
   return (
     <div className="App">
         <Modal
@@ -88,7 +96,8 @@ function App() {
                             initialValues={{
                                 name: "",
                                 lastName: "",
-                                email: ""
+                                email: "",
+                                color: ""
                             }}
                             validateOnBlur
                             validationSchema={validationSchema}
@@ -115,22 +124,39 @@ function App() {
                                     <Box style={{margin: "30px 0"}}>
                                         <Typography component="span" variant="h6">Product type</Typography>
                                         <FormControl style={{width: "220px", marginLeft: "250px"}} variant="outlined">
-                                            <InputLabel htmlFor="outlined-age-native-simple">Select product type</InputLabel>
-                                            <Select
-                                                native
-                                                value={number.age}
-                                                onChange={handleUpdate}
-                                                label="Select product type"
-                                                inputProps={{
-                                                    name: 'age',
-                                                    id: 'outlined-age-native-simple',
-                                                }}
+                                            {/*<InputLabel htmlFor="outlined-age-native-simple">Select product type</InputLabel>*/}
+                                            {/*<Select*/}
+                                            {/*    name="color"*/}
+                                            {/*    value={values.color}*/}
+                                            {/*    // native*/}
+                                            {/*    // value={number.age}*/}
+                                            {/*    onChange={handleUpdate}*/}
+                                            {/*    label="Select product type"*/}
+                                            {/*    inputProps={{*/}
+                                            {/*        name: 'age',*/}
+                                            {/*        id: 'outlined-age-native-simple',*/}
+                                            {/*    }}*/}
+                                            {/*>*/}
+                                            {/*    <option aria-label="None" value="" />*/}
+                                            {/*    <option value={100}>Product 100$</option>*/}
+                                            {/*    <option value={200}>Product 200$</option>*/}
+                                            {/*    <option value={303}>Product 300$</option>*/}
+                                            {/*</Select>*/}
+                                            <select
+                                                className={classes.select}
+                                                name="color"
+                                                value={values.color}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                             >
-                                                <option aria-label="None" value="" />
-                                                <option value={100}>Product 100$</option>
-                                                <option value={200}>Product 200$</option>
-                                                <option value={303}>Product 300$</option>
-                                            </Select>
+                                                <option value="" label="Select product type"/>
+                                                <option value={100} label="Product 100$"/>
+                                                <option value={200} label="Product 200$"/>
+                                                <option value={300} label="Product 300$"/>
+                                            </select>
+
+                                            {touched.color && errors.color && <Typography className={classes.error} component="h6">{errors.color}</Typography>}
+
                                         </FormControl>
                                     </Box>
 
@@ -140,7 +166,7 @@ function App() {
                                                 <Typography component="span" variant="h6">Additional feature for $100</Typography>
                                             </Grid>
                                             <Grid item={6}>
-                                                <FormControlLabel control={<Switch checked={checked} color="primary" onChange={toggleChecked}/>}/>
+                                                <FormControlLabel control={<Switch checked={supChecked} color="primary" onChange={supToggleChecked}/>}/>
                                             </Grid>
                                         </Grid>
                                         <Grid container spacing={10}>
@@ -149,7 +175,7 @@ function App() {
 
                                             </Grid>
                                             <Grid item={6}>
-                                                <FormControlLabel control={<Switch checked={checked}  color="primary" onChange={toggleChecked} />}/>
+                                                <FormControlLabel control={<Switch checked={subChecked}  color="primary" onChange={subToggleChecked} />}/>
                                             </Grid>
                                         </Grid>
 
