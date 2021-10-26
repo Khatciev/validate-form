@@ -9,6 +9,13 @@ const useStyles = makeStyles({
     borderRadius: "5px",
     height: "50px",
   },
+  formControl: {
+    width: "220px",
+    marginLeft: "250px"
+  },
+  boxSelect: {
+    margin: "30px 0"
+  }
 });
 
 const SelectValidate = ({
@@ -25,12 +32,12 @@ const SelectValidate = ({
   };
   return (
     <>
-      <Box style={{ margin: "30px 0" }}>
+      <Box className={classes.boxSelect}>
         <Typography component="span" variant="h6">
           Product type
         </Typography>
         <FormControl
-          style={{ width: "220px", marginLeft: "250px" }}
+      className={classes.formControl}
           variant="outlined"
         >
           <select

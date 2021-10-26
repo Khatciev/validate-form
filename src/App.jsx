@@ -1,9 +1,6 @@
-
 import React from "react";
-import {Button} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import ModalForm from "./ModalForm";
-
-
 
 function App() {
   const [open, setOpen] = React.useState(false);
@@ -12,7 +9,7 @@ function App() {
   };
   return (
     <div className="App">
-        <ModalForm open={open} setOpen={setOpen}/>
+      <ModalForm open={open} setOpen={setOpen} />
       <Button variant="contained" color="primary" onClick={handleOpen}>
         Открыть модалку
       </Button>
