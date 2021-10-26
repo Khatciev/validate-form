@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
     Button,
     Fade,
@@ -49,14 +49,22 @@ function App() {
         age: '',
         name: 'hai',
     })
-
+    console.log(checked)
     const  validationSchema = yup.object().shape({
         name: yup.string().typeError("Должно быть строкой").required("Обязательно"),
         lastName: yup.string().typeError("Должно быть строкой").required("Обязательно"),
         email: yup.string().email("Введите верный email").required("Обязательно")
     })
-    const toggleChecked = () => {
-        setChecked((prev) => !prev);
+
+    const toggleChecked = (ev) => {
+        setChecked(!checked);
+
+    };
+    const toggleChecked1 = (ev) => {
+        console.log(checked)
+        if(!checked) return setTotal(prev => prev + Number(ev.target.value))
+        if(checked) return setTotal(prev => prev - Number(ev.target.value))
+
     };
     const handleOpen = () => {
         setOpen(true);
@@ -64,12 +72,16 @@ function App() {
     const handleClose = () => {
         setOpen(false);
     };
+    // const handleGet = (ev) => {
+    //     setTotal(ev.target.value);
+    // };
     const handleUpdate = (event) => {
-        const name = event.target.name;
-        setNumber({
-            ...number,
-            [name]: event.target.value,
-        });
+        setTotal(Number(event.target.value))
+        // const name = event.target.name;
+        // setNumber({
+        //     ...number,
+        //     [name]: event.target.value,
+        // });
     };
   return (
     <div className="App">
@@ -118,7 +130,6 @@ function App() {
                                             <InputLabel htmlFor="outlined-age-native-simple">Select product type</InputLabel>
                                             <Select
                                                 native
-                                                value={number.age}
                                                 onChange={handleUpdate}
                                                 label="Select product type"
                                                 inputProps={{
@@ -126,10 +137,10 @@ function App() {
                                                     id: 'outlined-age-native-simple',
                                                 }}
                                             >
-                                                <option aria-label="None" value="" />
+                                                <option  aria-label="None" value="" />
                                                 <option value={100}>Product 100$</option>
-                                                <option value={200}>Product 200$</option>
-                                                <option value={303}>Product 300$</option>
+                                                <option  value={200}>Product 200$</option>
+                                                <option  value={300}>Product 300$</option>
                                             </Select>
                                         </FormControl>
                                     </Box>
@@ -140,7 +151,7 @@ function App() {
                                                 <Typography component="span" variant="h6">Additional feature for $100</Typography>
                                             </Grid>
                                             <Grid item={6}>
-                                                <FormControlLabel control={<Switch checked={checked} color="primary" onChange={toggleChecked}/>}/>
+                                                <FormControlLabel  control={<Switch  value={100} checked={checked} color="primary" onClick={toggleChecked}/>}/>
                                             </Grid>
                                         </Grid>
                                         <Grid container spacing={10}>
@@ -149,7 +160,7 @@ function App() {
 
                                             </Grid>
                                             <Grid item={6}>
-                                                <FormControlLabel control={<Switch checked={checked}  color="primary" onChange={toggleChecked} />}/>
+                                                <FormControlLabel control={<Switch value={200} checked={checked}  color="primary" onClick={toggleChecked} />}/>
                                             </Grid>
                                         </Grid>
 
